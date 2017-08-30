@@ -1,0 +1,20 @@
+---
+version: "{build}"
+init:
+  - set PATH=C:\ruby%ruby_version%\bin;C:\Program Files\7-Zip;C:\Program Files\AppVeyor\BuildAgent;C:\Program Files\Git\cmd;C:\Windows\system32
+  - if %ruby_version%==_trunk (
+        appveyor DownloadFile https://dl.bintray.com/msp-greg/ruby_windows/ruby_trunk.7z -FileName C:\ruby_trunk.7z &
+        7z x C:\ruby_trunk.7z -oC:\ruby_trunk & C:\ruby_trunk\trunk_install.cmd)
+install:
+  - gem install rake-compiler --no-document --env-shebang
+build_script:
+  - ruby --version
+  - rake -rdevkit compile
+test_script:
+  - rake test
+on_finish:
+ - ruby -v
+environment:
+  matrix:
+    - ruby_version: "24-x64"
+    - ruby_version: "_trunk"
