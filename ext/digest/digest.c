@@ -543,7 +543,12 @@ static const rb_data_type_t metadata_type = {
     {0},
 };
 
-RUBY_FUNC_EXPORTED VALUE
+#ifdef _WIN32
+__declspec(dllexport)
+#else
+RUBY_FUNC_EXPORTED
+#endif
+VALUE
 rb_digest_wrap_metadata(const rb_digest_metadata_t *meta)
 {
     return rb_obj_freeze(TypedData_Wrap_Struct(0, &metadata_type, (void *)meta));
