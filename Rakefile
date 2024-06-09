@@ -58,10 +58,9 @@ task :check do
       require "digest"
 
       name = RUBY_ENGINE == "jruby" ? "/digest.rb" : "/digest.#{RbConfig::CONFIG["DLEXT"]}"
-      found = $".select {|path| path.end_with?(name)} || []
-      puts "found.size #{found&.size}", "found.first #{found&.first}", "tmpdir.dump #{tmpdir.dump}"
-
+      found = $".select {|path| path.end_with?(name)}
       unless found.size == 1 and found.first.start_with?(#{tmpdir.dump})
+        puts "found.size #{found&.size}", "found.first #{found&.first}", "tmpdir.dump #{tmpdir.dump}"        
         abort "Unexpected digest is loaded: \#{found.inspect}"
       end
 
